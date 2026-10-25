@@ -1,0 +1,65 @@
+/* Dub Echo Plugin - admin pages */
+.dub-echo-admin .dub-echo-title { display: flex; align-items: center; gap: 8px; }
+.dub-echo-admin .dub-echo-title .dashicons { font-size: 28px; width: 28px; height: 28px; color: #b8261a; }
+.dub-echo-admin .dub-echo-intro { font-size: 14px; max-width: 760px; }
+
+.dub-echo-addbox {
+	display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px;
+	margin: 16px 0 20px; padding: 16px 18px;
+	background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #e2a21b;
+}
+.dub-echo-addbox .button-hero { display: inline-flex; align-items: center; gap: 6px; }
+.dub-echo-addbox .button-hero .dashicons { margin-top: 2px; }
+.dub-echo-upload { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+.dub-echo-empty { padding: 30px; text-align: center; background: #fff; border: 1px dashed #c3c4c7; }
+
+.dub-echo-tracks td, .dub-echo-tracks th { vertical-align: middle; }
+.dub-echo-tracks input[type=text] { width: 100%; min-width: 130px; }
+.dub-echo-tracks .col-title { min-width: 220px; }
+.dub-echo-tracks .regular-text { width: 100%; }
+.dub-echo-tracks .col-handle { width: 24px; cursor: move; color: #8c8f94; }
+.dub-echo-tracks .col-play { width: 28px; }
+.dub-echo-tracks .col-bpm { width: 80px; }
+.dub-echo-tracks .col-bpm input { width: 76px; }
+.dub-echo-tracks .col-num { width: 64px; text-align: center; }
+.dub-echo-tracks .col-actions { width: 32px; text-align: center; }
+.dub-echo-tracks .col-file { width: 170px; font-size: 12px; overflow-wrap: anywhere; }
+.dub-echo-tracks .col-file .description { display: block; }
+.dub-echo-tracks tr.is-hidden td { opacity: .55; }
+.dub-echo-tracks tr.ui-sortable-helper { background: #fff8e5; box-shadow: 0 3px 8px rgba(0, 0, 0, .15); display: table; }
+.dub-echo-tracks .dub-echo-delete { color: #b32d2e; }
+.dub-echo-preview .dashicons { font-size: 22px; width: 22px; height: 22px; color: #2271b1; }
+.dub-echo-missing { color: #b32d2e; font-weight: 600; }
+.dub-echo-shortcode-hint { margin-top: 18px; padding: 10px 14px; background: #f6f7f7; border: 1px solid #dcdcde; }
+
+.dub-echo-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 18px 0; max-width: 980px; }
+.dub-echo-card { display: flex; flex-direction: column; padding: 16px 18px; background: #1d1b17; color: #eac48e; border-radius: 6px; }
+.dub-echo-card .num { font-size: 28px; font-weight: 600; color: #ffb347; line-height: 1.2; }
+.dub-echo-card .lbl { font-size: 13px; opacity: .85; }
+
+.dub-echo-ranking { max-width: 980px; }
+.dub-echo-ranking .col-rank { width: 36px; text-align: center; font-weight: 600; }
+.dub-echo-ranking .col-num { width: 90px; text-align: center; }
+.dub-echo-ranking .col-actions { width: 32px; }
+.dub-echo-ranking .col-bar { width: 34%; }
+.dub-echo-ranking .col-bar .bar { display: inline-block; width: calc(100% - 70px); height: 12px; margin-right: 8px; vertical-align: middle; background: #f0f0f1; border-radius: 6px; overflow: hidden; }
+.dub-echo-ranking .col-bar .bar span { display: block; height: 100%; background: linear-gradient(90deg, #b8261a, #e2a21b, #2f7a3a); border-radius: 6px; }
+.dub-echo-ranking tr.is-hidden td { opacity: .6; }
+.dub-echo-ranking .medal { display: inline-block; width: 24px; height: 24px; line-height: 24px; border-radius: 50%; color: #fff; }
+.dub-echo-ranking .medal-1 { background: #d4a017; }
+.dub-echo-ranking .medal-2 { background: #9aa0a6; }
+.dub-echo-ranking .medal-3 { background: #b06c30; }
+
+.dub-echo-chart { display: flex; align-items: flex-end; gap: 3px; height: 140px; max-width: 980px; padding: 10px; background: #fff; border: 1px solid #c3c4c7; }
+.dub-echo-chart .day { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.dub-echo-chart .day span { display: block; width: 100%; min-height: 1px; background: #e2a21b; border-radius: 2px 2px 0 0; }
+.dub-echo-chart .day em { position: absolute; left: 0; right: 0; bottom: 2px; font-style: normal; font-size: 10px; text-align: center; color: #1d2327; }
+.dub-echo-stat-actions { margin-top: 18px; }
+.dub-echo-stat-actions .button .dashicons { margin-top: 3px; }
+.dub-echo-reset { color: #b32d2e !important; border-color: #b32d2e !important; }
+
+.dub-echo-help { max-width: 900px; }
+.dub-echo-big { font-size: 18px; padding: 6px 12px; }
+.dub-echo-privacy { margin: 10px 0; padding: 12px 16px; background: #fff; border-left: 4px solid #2f7a3a; font-style: italic; }
+.dub-echo-dash li { padding: 4px 0; border-bottom: 1px solid #f0f0f1; }
