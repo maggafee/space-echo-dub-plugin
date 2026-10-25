@@ -1,0 +1,8 @@
+DUBASCO TAPE ECHO - Installation Windows
+========================================
+
+1. Den Ordner "Dubasco Tape Echo.vst3" nach  C:\Program Files\Common Files\VST3\  kopieren.
+2. Ableton Live: Einstellungen > Plug-Ins > "VST3 Plug-In System Folders" an, ggf. "Neu scannen".
+3. MIDI Learn mit Hardware: MIDI-Spur anlegen, Input = dein Controller, "MIDI To" = die Spur mit dem
+   Plugin und darunter "Dubasco Tape Echo", Monitor auf "In".
+"Dubasco Tape Echo.exe" ist eine eigenständige Version (ohne DAW), z. B. zum Testen mit dem Audio-Interface.

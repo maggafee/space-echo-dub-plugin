@@ -1,0 +1,113 @@
+name: Build plugin
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  macos:
+    name: macOS (VST3 + AU + Standalone, Universal)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -B build -G Xcode -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+      - name: Build
+        run: cmake --build build --config Release -- -quiet
+      - name: Ad-hoc sign
+        run: |
+          cd build/DubascoTapeEcho_artefacts/Release
+          codesign --force --deep --sign - "VST3/Dubasco Tape Echo.vst3"
+          codesign --force --deep --sign - "AU/Dubasco Tape Echo.component"
+          codesign --force --deep --sign - "Standalone/Dubasco Tape Echo.app"
+      - name: Validate AU
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -R "build/DubascoTapeEcho_artefacts/Release/AU/Dubasco Tape Echo.component" ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar || true
+          sleep 3
+          auval -v aumf DbTe Dbsc
+      - name: Validate VST3 (pluginval)
+        run: |
+          curl -sSL -o pluginval.zip https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_macOS.zip
+          unzip -q pluginval.zip
+          ./pluginval.app/Contents/MacOS/pluginval --strictness-level 8 --skip-gui-tests --validate "build/DubascoTapeEcho_artefacts/Release/VST3/Dubasco Tape Echo.vst3"
+      - name: Package
+        run: |
+          mkdir -p dist/Dubasco-Tape-Echo-macOS
+          cp -R "build/DubascoTapeEcho_artefacts/Release/VST3/Dubasco Tape Echo.vst3" dist/Dubasco-Tape-Echo-macOS/
+          cp -R "build/DubascoTapeEcho_artefacts/Release/AU/Dubasco Tape Echo.component" dist/Dubasco-Tape-Echo-macOS/
+          cp -R "build/DubascoTapeEcho_artefacts/Release/Standalone/Dubasco Tape Echo.app" dist/Dubasco-Tape-Echo-macOS/
+          cp packaging/INSTALL_macOS.txt dist/Dubasco-Tape-Echo-macOS/
+          cd dist && ditto -c -k --keepParent Dubasco-Tape-Echo-macOS Dubasco-Tape-Echo-macOS.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Dubasco-Tape-Echo-macOS
+          path: dist/Dubasco-Tape-Echo-macOS.zip
+
+  windows:
+    name: Windows (VST3 + Standalone)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -B build -G "Visual Studio 17 2022" -A x64
+      - name: Build
+        run: cmake --build build --config Release --parallel
+      - name: Validate VST3 (pluginval)
+        shell: pwsh
+        run: |
+          Invoke-WebRequest https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Windows.zip -OutFile pluginval.zip
+          Expand-Archive pluginval.zip -DestinationPath .
+          .\pluginval.exe --strictness-level 8 --skip-gui-tests --validate "build\DubascoTapeEcho_artefacts\Release\VST3\Dubasco Tape Echo.vst3"
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist/Dubasco-Tape-Echo-Windows | Out-Null
+          Copy-Item -Recurse "build/DubascoTapeEcho_artefacts/Release/VST3/Dubasco Tape Echo.vst3" dist/Dubasco-Tape-Echo-Windows/
+          Copy-Item "build/DubascoTapeEcho_artefacts/Release/Standalone/Dubasco Tape Echo.exe" dist/Dubasco-Tape-Echo-Windows/
+          Copy-Item packaging/INSTALL_Windows.txt dist/Dubasco-Tape-Echo-Windows/
+          Compress-Archive -Path dist/Dubasco-Tape-Echo-Windows -DestinationPath dist/Dubasco-Tape-Echo-Windows.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Dubasco-Tape-Echo-Windows
+          path: dist/Dubasco-Tape-Echo-Windows.zip
+
+  linux:
+    name: Linux (VST3 + Standalone, DSP tests)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependencies
+        run: sudo apt-get update && sudo apt-get install -y ninja-build libasound2-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxext-dev libfreetype-dev libfontconfig1-dev libgl1-mesa-dev
+      - name: Configure
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DDUBASCO_BUILD_TESTS=ON
+      - name: Build
+        run: cmake --build build
+      - name: DSP tests
+        run: mkdir -p renders && ./build/DubascoRender renders
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Dubasco-Tape-Echo-Linux
+          path: |
+            build/DubascoTapeEcho_artefacts/Release/VST3
+            build/DubascoTapeEcho_artefacts/Release/Standalone
+
+  release:
+    name: GitHub release (tags only)
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [ macos, windows ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*.zip

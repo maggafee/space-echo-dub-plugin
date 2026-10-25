@@ -1,0 +1,23 @@
+DUBASCO TAPE ECHO - Installation macOS
+======================================
+
+1. Plugins kopieren
+   - "Dubasco Tape Echo.component"  ->  ~/Library/Audio/Plug-Ins/Components/      (Audio Unit, für Logic)
+   - "Dubasco Tape Echo.vst3"       ->  ~/Library/Audio/Plug-Ins/VST3/            (VST3, für Ableton)
+   (~ ist dein Benutzerordner. Im Finder: Gehe zu > Gehe zum Ordner... und den Pfad einfügen.)
+
+2. Gatekeeper-Sperre lösen (das Plugin ist nur "ad-hoc" signiert, nicht von Apple notarisiert)
+   Terminal öffnen und eingeben:
+     xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/"Dubasco Tape Echo.component"
+     xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/"Dubasco Tape Echo.vst3"
+
+3. Logic Pro: Logic neu starten. Der Plugin-Manager prüft das AU beim Start.
+   Zu finden unter Audio-FX > Audio Units > Dubasco > Dubasco Tape Echo.
+   MIDI Learn mit Hardware: Software-Instrument-Spur anlegen, im Instrument-Slot
+   "AU MIDI-controlled Effects > Dubasco > Dubasco Tape Echo" wählen und oben rechts im Plugin-Fenster
+   die Audio-Spur als Side Chain wählen. Dann gehen die MIDI-Daten deines Controllers ans Plugin.
+   (Alternativ geht immer: Logic "Controller-Zuweisungen" direkt auf die Plugin-Parameter.)
+
+4. Ableton Live: Einstellungen > Plug-Ins > "VST3 Plug-In System Folders" an, ggf. "Neu scannen".
+   MIDI Learn mit Hardware: MIDI-Spur anlegen, Input = dein Controller, "MIDI To" = die Spur mit dem
+   Plugin und darunter "Dubasco Tape Echo". Monitor auf "In".
