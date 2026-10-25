@@ -10,6 +10,8 @@ DubascoProcessor::DubascoProcessor()
       presets (apvts)
 {
     bypassParam = dynamic_cast<juce::AudioParameterBool*> (apvts.getParameter (pid::bypass));
+    // the standalone app routes its MIDI input through processBlock already
+    midiLearn.setDirectInputAvailable (wrapperType != wrapperType_Standalone);
 
     auto bind = [this] (P& p, const char* id)
     {

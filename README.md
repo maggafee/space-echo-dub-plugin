@@ -56,10 +56,11 @@ CCs steuern Regler stufenlos, Schalter schalten bei Wert 64 und mehr. Noten und 
 momentan (Note an/aus), Schalter wechseln bei jedem Anschlag, ECHO MODE springt zum nächsten Modus. Mappings werden mit dem
 Projekt gespeichert. Unter **MIDI > Save mappings as default** gelten sie für jede neue Instanz.
 
-**MIDI zum Plugin schicken:**
-- *Ableton:* MIDI-Spur, Input = Controller, "MIDI To" = Spur mit dem Plugin, dann "Dubasco Tape Echo", Monitor "In".
-- *Logic:* Das AU ist ein "MIDI-controlled Effect". Software-Instrument-Spur anlegen, im Instrument-Slot *AU MIDI-controlled Effects >
-  Dubasco Tape Echo* wählen, Audiospur als Side Chain einstellen.
+**MIDI zum Plugin:** Das Plugin öffnet selbst alle MIDI-Eingänge des Rechners und hört direkt auf deine Controller,
+ohne Routing im Host (abschaltbar im MIDI-Menü). Die grüne Lampe am MIDI-Knopf zeigt eingehende Daten, das MIDI-Menü listet
+die Geräte und die letzte Nachricht. Kommt derselbe Controller zusätzlich über den Host (z. B. Ableton "MIDI To"), wird das
+Doppel erkannt und verworfen. Unter Windows kann ein Controller, den Ableton bereits als Eingang nutzt, gesperrt sein:
+dann in Ableton eine MIDI-Spur mit Input = Controller und "MIDI To" = Plugin-Spur / "Dubasco Tape Echo" anlegen.
 
 ## Bauen
 

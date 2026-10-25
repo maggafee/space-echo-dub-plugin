@@ -35,7 +35,9 @@ public:
             "     HOLD = Endlosschleife: Eingang zu, das Band dreht weiter.\n\n"
             "MIDI LEARN\n"
             "Oben MIDI LEARN anklicken, Regler anklicken, am Controller bewegen. Oder Rechtsklick auf einen Regler.\n"
-            "Ableton: MIDI-Spur anlegen, 'MIDI To' auf das Plugin. Logic: Plugin als 'MIDI-controlled Effect' laden, Audiospur als Side Chain wählen.\n"
+            "Das Plugin hört direkt auf alle angeschlossenen MIDI-Controller, es ist kein Routing im Host nötig. Die grüne Lampe am MIDI-Knopf\n"
+            "zeigt eingehende Daten, im MIDI-Menü steht die letzte empfangene Nachricht. Windows: Ist der Controller in Ableton als Eingang\n"
+            "aktiv, ist er für andere Programme gesperrt. Dann in Ableton eine MIDI-Spur mit 'MIDI To' auf das Plugin legen.\n"
             "Mappings werden mit dem Projekt gespeichert. Unter MIDI > 'Save mappings as default' gelten sie für neue Instanzen.\n\n"
             "TIPPS: Doppelklick setzt einen Regler zurück. Das Mausrad funktioniert auf allen Reglern und Wahlschaltern. Klick schließt diese Hilfe.");
         g.drawFittedText (text, r, juce::Justification::topLeft, 60, 1.0f);
@@ -93,7 +95,15 @@ DubascoEditor::DubascoEditor (DubascoProcessor& p)
 
     auto& apvts = proc.apvts;
 
-    // ---- reels (behind everything else)
+    // ---- moving tape texture (under the reels, which cover the tape ends)
+    {
+        const juce::Rectangle<float> box (layout::tapeBox[0], layout::tapeBox[1], layout::tapeBox[2] - layout::tapeBox[0], layout::tapeBox[3] - layout::tapeBox[1]);
+        std::vector<juce::Point<float>> pts;
+        for (auto& p : layout::tapePath) pts.push_back ({ p[0], p[1] });
+        tapeRun = registerControl (std::make_unique<gui::TapeRun> (box, pts, layout::tapeW), box.translated (0, (float) layout::topBarH));
+    }
+
+    // ---- reels
     for (auto* id : { "reelL", "reelR" })
     {
         auto* c = findCtl (id);
@@ -137,8 +147,10 @@ DubascoEditor::DubascoEditor (DubascoProcessor& p)
         auto* c = findCtl (d.id);
         auto lever = std::make_unique<gui::LeverSwitch> (d.id, d.angles, layout::leverArmToBase, d.wrap);
         lever->attach (*apvts.getParameter (d.id));
+        const bool chicken = juce::String (d.id) == pid::mode;
+        if (chicken) lever->useChickenhead();
         const float baseW = 2.0f * c->r / 0.98f;
-        levers.push_back (registerControl (std::move (lever), squareAt (*c, baseW * 0.8f)));
+        levers.push_back (registerControl (std::move (lever), squareAt (*c, chicken ? 82.0f : baseW * 0.8f)));
     }
 
     // ---- power toggle + lamp
@@ -344,6 +356,7 @@ void DubascoEditor::tick (double ts)
     flutterVis = 0.06f * wf * std::sin ((float) ts * 4.1f) + 0.03f * wf * std::sin ((float) ts * 13.7f);
     reelL->tick (dt, speed, flutterVis);
     reelR->tick (dt, speed, -flutterVis * 0.5f);
+    tapeRun->tick (dt, speed * (1.0f + flutterVis));
 
     const int src = proc.vuSource.load();
     vu->sourceLabel = src == 0 ? "IN" : (src == 1 ? "ECHO" : "OUT");

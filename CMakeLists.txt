@@ -80,6 +80,8 @@ juce_add_binary_data(DubascoAssets SOURCES
     Resources/images/toggle_bat.png
     Resources/images/toggle_nut.png
     Resources/images/jack.png
+    Resources/images/chickenhead.png
+    Resources/images/tape_mask.png
     Resources/fonts/Oswald-SemiBold.ttf
     Resources/fonts/Oswald-Medium.ttf)
 

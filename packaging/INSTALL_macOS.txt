@@ -6,18 +6,30 @@ DUBASCO TAPE ECHO - Installation macOS
    - "Dubasco Tape Echo.vst3"       ->  ~/Library/Audio/Plug-Ins/VST3/            (VST3, für Ableton)
    (~ ist dein Benutzerordner. Im Finder: Gehe zu > Gehe zum Ordner... und den Pfad einfügen.)
 
-2. Gatekeeper-Sperre lösen (das Plugin ist nur "ad-hoc" signiert, nicht von Apple notarisiert)
-   Terminal öffnen und eingeben:
-     xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/"Dubasco Tape Echo.component"
-     xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/"Dubasco Tape Echo.vst3"
+2. WICHTIG: Gatekeeper-Sperre lösen
+   Das Plugin ist nicht von Apple notarisiert. macOS blockiert es deshalb nach dem Download
+   (Meldungen wie "kann nicht geöffnet werden", "ist beschädigt" oder Logic meldet das AU als
+   fehlerhaft). Das behebst du einmalig im Terminal (Programme > Dienstprogramme > Terminal).
+   Diese Zeilen einfügen und jeweils Enter drücken:
 
-3. Logic Pro: Logic neu starten. Der Plugin-Manager prüft das AU beim Start.
+     xattr -rd com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/"Dubasco Tape Echo.component"
+     xattr -rd com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/"Dubasco Tape Echo.vst3"
+
+   Für die Standalone-App (falls du sie nutzt), z. B. im Programme-Ordner:
+     xattr -rd com.apple.quarantine /Applications/"Dubasco Tape Echo.app"
+
+   Danach Logic bzw. Ableton neu starten.
+
+3. Logic Pro
+   Hatte Logic das Plugin vorher schon als fehlerhaft markiert: Logic Pro > Einstellungen >
+   Plug-in-Manager, "Dubasco Tape Echo" auswählen und "Zurücksetzen & Auswahl erneut prüfen" klicken.
    Zu finden unter Audio-FX > Audio Units > Dubasco > Dubasco Tape Echo.
-   MIDI Learn mit Hardware: Software-Instrument-Spur anlegen, im Instrument-Slot
-   "AU MIDI-controlled Effects > Dubasco > Dubasco Tape Echo" wählen und oben rechts im Plugin-Fenster
-   die Audio-Spur als Side Chain wählen. Dann gehen die MIDI-Daten deines Controllers ans Plugin.
-   (Alternativ geht immer: Logic "Controller-Zuweisungen" direkt auf die Plugin-Parameter.)
 
-4. Ableton Live: Einstellungen > Plug-Ins > "VST3 Plug-In System Folders" an, ggf. "Neu scannen".
-   MIDI Learn mit Hardware: MIDI-Spur anlegen, Input = dein Controller, "MIDI To" = die Spur mit dem
-   Plugin und darunter "Dubasco Tape Echo". Monitor auf "In".
+4. Ableton Live
+   Einstellungen > Plug-Ins > "VST3 Plug-In System Folders" an, ggf. "Neu scannen".
+
+5. MIDI Learn
+   Das Plugin hört direkt auf alle angeschlossenen MIDI-Controller, ein MIDI-Routing im Host ist
+   nicht nötig. Oben "MIDI LEARN" klicken, einen Regler im Plugin anklicken, am Controller drehen.
+   Die grüne Lampe am "MIDI"-Knopf leuchtet, sobald MIDI ankommt. Im MIDI-Menü siehst du die
+   gefundenen Geräte und die zuletzt empfangene Nachricht.

@@ -15,6 +15,8 @@ int main (int argc, char** argv)
     proc.prepareToPlay (48000, 512);
     if (argc > 3 && juce::String (argv[3]) == "preset")
         proc.presets.loadFactory (5);
+    if (argc > 3 && juce::String (argv[3]) == "off")
+        proc.apvts.getParameter (pid::power)->setValueNotifyingHost (0.0f);
     if (argc > 3 && juce::String (argv[3]) == "miditest")
     {
         auto& ml = proc.midiLearn;
@@ -39,6 +41,23 @@ int main (int argc, char** argv)
         send (juce::MidiMessage::controllerEvent (2, 1, 127));
         ml.getOverride (ml.indexOf (pid::mode), v);
         std::printf ("mode mapping: '%s', CC127 -> index %.0f (expect 11)\n", ml.describe (ml.indexOf (pid::mode)).toRawUTF8(), v);
+        // direct device input: learning, and the host echo of the same controller is ignored
+        ml.arm (ml.indexOf (pid::echoLevel));
+        ml.injectDeviceMessage (juce::MidiMessage::controllerEvent (1, 30, 10));
+        const auto a0 = ml.getActivityCounter();
+        ml.injectDeviceMessage (juce::MidiMessage::controllerEvent (1, 30, 127));
+        send (juce::MidiMessage::controllerEvent (1, 30, 127));   // same event via the host
+        ml.getOverride (ml.indexOf (pid::echoLevel), v);
+        std::printf ("device mapping: '%s', value %.1f (expect 10.0), counted %u (expect 1)\n",
+                     ml.describe (ml.indexOf (pid::echoLevel)).toRawUTF8(), v, (unsigned) (ml.getActivityCounter() - a0));
+        ml.arm (ml.indexOf (pid::hold));
+        ml.injectDeviceMessage (juce::MidiMessage::noteOn (1, 40, (juce::uint8) 100));
+        juce::Thread::sleep (200);
+        ml.injectDeviceMessage (juce::MidiMessage::noteOn (1, 40, (juce::uint8) 100));
+        send (juce::MidiMessage::noteOn (1, 40, (juce::uint8) 100));   // echo: must not toggle back
+        ml.getOverride (ml.indexOf (pid::hold), v);
+        std::printf ("hold toggled by device note, host echo ignored: %.0f (expect 1)\n", v);
+        std::printf ("last message: %s\n", ml.getLastMessageText().toRawUTF8());
         juce::MemoryBlock st; proc.getStateInformation (st);
         DubascoProcessor p2; p2.setStateInformation (st.getData(), (int) st.getSize());
         std::printf ("restored mapping in new instance: '%s'\n", p2.midiLearn.describe (p2.midiLearn.indexOf (pid::feedback)).toRawUTF8());

@@ -143,9 +143,32 @@ void LeverSwitch::setIndex (int i, bool /*gesture*/)
     if (attachment) attachment->setValueAsCompleteGesture ((float) i);
 }
 
+void LeverSwitch::useChickenhead()
+{
+    chickenhead = true;
+    chicken.setSource (Assets::image ("chickenhead_png"));
+    repaint();
+}
+
 void LeverSwitch::paint (juce::Graphics& g)
 {
     const auto c = getLocalBounds().toFloat().getCentre();
+    if (chickenhead)
+    {
+        // sprite: skirt radius 0.25 D, pointer tip at 0.47 D (D = drawn size)
+        const float D = (float) getWidth() * 0.60f;
+        const float a = juce::degreesToRadians (shownAngle);
+        softShadow (g, c, D * 0.25f, D * 0.04f, 0.6f);
+        {
+            juce::Path p;
+            p.startNewSubPath (c);
+            p.lineTo (c.x + std::sin (a) * D * 0.42f + 2.0f, c.y - std::cos (a) * D * 0.42f + 4.0f);
+            g.setColour (juce::Colours::black.withAlpha (0.32f));
+            g.strokePath (p, juce::PathStrokeType (D * 0.11f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        }
+        drawRotated (g, chicken, c.x, c.y, D, a);
+        return;
+    }
     const float baseW = (float) getWidth() / 1.6f;
     softShadow (g, c, baseW * 0.48f, baseW * 0.05f, 0.5f);
     drawRotated (g, base, c.x, c.y, baseW, 0.0f);
@@ -195,6 +218,20 @@ void LeverSwitch::mouseUp (const juce::MouseEvent& e)
     if (e.mods.isPopupMenu() || e.mouseWasDraggedSinceMouseDown()) return;
     // click: left half = previous, right half = next (2-position switches simply flip)
     if (angles.size() == 2) { setIndex (1 - index, true); return; }
+    if (chickenhead)
+    {
+        // click on a position (number) jumps straight there
+        const auto d = e.position - getLocalBounds().toFloat().getCentre();
+        if (d.getDistanceFromOrigin() > getWidth() * 0.12f)
+        {
+            const float ang = juce::radiansToDegrees (std::atan2 (d.x, -d.y));
+            int best = 0;
+            for (int i = 1; i < (int) angles.size(); ++i)
+                if (std::abs (angles[(size_t) i] - ang) < std::abs (angles[(size_t) best] - ang)) best = i;
+            setIndex (best, true);
+            return;
+        }
+    }
     const bool right = e.position.x >= getWidth() * 0.5f;
     setIndex (index + (right ? 1 : -1), true);
 }
@@ -410,6 +447,66 @@ void Reel::tick (double dt, float speed, float flutter)
     angle += (float) (dt * speed * 0.75 * juce::MathConstants<double>::twoPi) * (1.0f + flutter);
     if (angle > juce::MathConstants<float>::twoPi) angle -= juce::MathConstants<float>::twoPi;
     repaint();
+}
+
+// ============================================================================= TapeRun
+TapeRun::TapeRun (juce::Rectangle<float> boxDesign, std::vector<juce::Point<float>> pathDesign, float tapeWidth)
+    : box (boxDesign), width (tapeWidth)
+{
+    mask.setSource (Assets::image ("tape_mask_png"));
+    for (auto p : pathDesign) path.push_back (p - box.getPosition());
+    float acc = 0;
+    cum.push_back (0);
+    for (size_t i = 1; i < path.size(); ++i) { acc += path[i].getDistanceFrom (path[i - 1]); cum.push_back (acc); }
+    setInterceptsMouseClicks (false, false);
+}
+
+void TapeRun::tick (double dt, float speed)
+{
+    if (speed <= 0.0001f) return;
+    offset += (float) dt * speed * 140.0f;          // design px per second at nominal speed
+    if (offset > 1.0e6f) offset -= 1.0e6f;
+    repaint();
+}
+
+void TapeRun::paint (juce::Graphics& g)
+{
+    if (! mask.source().isValid() || path.size() < 2) return;
+    const float s = (float) getWidth() / box.getWidth();
+    const float phys = g.getInternalContext().getPhysicalPixelScaleFactor();
+    const int pw = juce::roundToInt (getWidth() * phys), ph = juce::roundToInt (getHeight() * phys);
+    g.reduceClipRegion (mask.get (pw, ph), juce::AffineTransform::scale (1.0f / phys));
+
+    auto pointAt = [this] (float t, juce::Point<float>& dir)
+    {
+        size_t i = 1;
+        while (i < cum.size() - 1 && cum[i] < t) ++i;
+        const float segLen = juce::jmax (0.001f, cum[i] - cum[i - 1]);
+        dir = (path[i] - path[i - 1]) / segLen;
+        return path[i - 1] + dir * juce::jlimit (0.0f, segLen, t - cum[i - 1]);
+    };
+
+    // streaks are fixed on the tape (hashed by index) and travel along the path with it
+    constexpr float spacing = 23.0f;
+    const float total = cum.back();
+    const int j0 = (int) std::floor ((-offset - 40.0f) / spacing), j1 = (int) std::ceil ((total - offset) / spacing);
+    for (int j = j0; j <= j1; ++j)
+    {
+        const auto h = (juce::uint32) (j * 2654435761u);
+        const float r1 = (float) ((h >> 8) & 255) / 255.0f, r2 = (float) ((h >> 16) & 255) / 255.0f;
+        const float t = (float) j * spacing + r1 * 14.0f + offset;
+        const float len = 6.0f + r2 * 20.0f;
+        if (t + len < 0 || t > total) continue;
+        juce::Point<float> dir;
+        const auto p0 = pointAt (juce::jmax (0.0f, t), dir);
+        const auto p1 = p0 + dir * len;
+        const bool light = (h & 3) != 0;
+        g.setColour (light ? juce::Colour (0xffe0b48c).withAlpha (0.10f + 0.16f * r1)
+                           : juce::Colours::black.withAlpha (0.18f + 0.15f * r2));
+        const float across = (r2 - 0.5f) * width * 0.5f;
+        const juce::Point<float> n (-dir.y, dir.x);
+        g.drawLine (juce::Line<float> ((p0 + n * across) * s, (p1 + n * across) * s), juce::jmax (1.0f, width * 0.28f * s));
+    }
 }
 
 // ============================================================================= VU meter

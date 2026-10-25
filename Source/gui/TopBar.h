@@ -16,7 +16,7 @@ public:
 };
 
 // Preset browser, A/B compare, MIDI learn and settings strip above the machine.
-class TopBar : public juce::Component, private juce::ChangeListener
+class TopBar : public juce::Component, private juce::ChangeListener, private juce::Timer
 {
 public:
     explicit TopBar (DubascoProcessor&);
@@ -32,6 +32,7 @@ public:
 
 private:
     void changeListenerCallback (juce::ChangeBroadcaster*) override;
+    void timerCallback() override;          // MIDI activity LED on the MIDI button
     void showPresetMenu();
     void showSaveDialog();
     void showMidiMenu();
@@ -43,5 +44,7 @@ private:
     juce::TextButton prev { "<" }, next { ">" }, presetName, save { "SAVE" }, ab { "A" }, copyAB { "A>B" },
         learn { "MIDI LEARN" }, midiMenu { "MIDI" }, settings { "SIZE" }, help { "?" };
     std::unique_ptr<juce::AlertWindow> saveWindow;
+    juce::uint32 lastActivity = 0;
+    float midiLed = 0;
 };
 } // namespace gui

@@ -44,6 +44,17 @@ void TopBarLookAndFeel::drawButtonText (juce::Graphics& g, juce::TextButton& b, 
     g.setFont (Assets::font (b.getHeight() * 0.5f));
     g.setColour (b.getToggleState() ? juce::Colours::white : colours::cream);
     g.drawFittedText (b.getButtonText(), b.getLocalBounds().reduced (6, 0), juce::Justification::centred, 1);
+    if (b.getProperties().contains ("midiLed"))
+    {
+        // small activity LED: lights up whenever MIDI arrives (from the host or directly from a device)
+        const float led = (float) b.getProperties()["midiLed"];
+        const float d = b.getHeight() * 0.22f;
+        const juce::Rectangle<float> r (b.getHeight() * 0.3f, (b.getHeight() - d) * 0.5f, d, d);
+        g.setColour (juce::Colour (0xff12331c).interpolatedWith (colours::learn, led));
+        g.fillEllipse (r);
+        g.setColour (juce::Colours::black.withAlpha (0.6f));
+        g.drawEllipse (r, 1.0f);
+    }
 }
 
 juce::Font TopBarLookAndFeel::getPopupMenuFont() { return Assets::font (17.0f, false); }
@@ -87,15 +98,30 @@ TopBar::TopBar (DubascoProcessor& p) : proc (p)
     help.onClick = [this] { if (onHelp) onHelp(); };
 
     proc.presets.addChangeListener (this);
+    startTimerHz (30);
     refreshLabels();
 }
 
 TopBar::~TopBar()
 {
+    stopTimer();
     proc.presets.removeChangeListener (this);
     for (auto* b : { &prev, &next, &presetName, &save, &ab, &copyAB, &learn, &midiMenu, &settings, &help })
         b->setLookAndFeel (nullptr);
     setLookAndFeel (nullptr);
+}
+
+void TopBar::timerCallback()
+{
+    const auto a = proc.midiLearn.getActivityCounter();
+    const float before = midiLed;
+    if (a != lastActivity) { lastActivity = a; midiLed = 1.0f; }
+    else midiLed = juce::jmax (0.0f, midiLed - 0.12f);
+    if (midiLed != before)
+    {
+        midiMenu.getProperties().set ("midiLed", midiLed);
+        midiMenu.repaint();
+    }
 }
 
 void TopBar::setLearnActive (bool a) { learn.setToggleState (a, juce::dontSendNotification); }
@@ -208,6 +234,20 @@ void TopBar::showMidiMenu()
     m.addItem (2, "Save mappings as default for new instances");
     m.addItem (3, "Load default mappings");
     m.addSeparator();
+    auto& mlx = proc.midiLearn;
+    if (mlx.isDirectInputAvailable())
+    {
+        m.addItem (4, "Receive MIDI directly from controllers", true, mlx.isDirectInputEnabled());
+        if (mlx.isDirectInputEnabled())
+        {
+            const auto names = mlx.getOpenDeviceNames();
+            if (names.isEmpty()) m.addItem (-2, "     (no MIDI device found)", false);
+            for (auto& n : names) m.addItem (-2, "     " + n, false);
+        }
+    }
+    const auto last = mlx.getLastMessageText();
+    m.addItem (-3, "Last MIDI: " + (last.isNotEmpty() ? last : juce::String ("nothing received yet")), false);
+    m.addSeparator();
     m.addSectionHeader ("Current mappings");
     auto& ml = proc.midiLearn;
     bool any = false;
@@ -227,6 +267,7 @@ void TopBar::showMidiMenu()
         if (r == 1) ml2.clearAll();
         else if (r == 2) ml2.saveAsDefault();
         else if (r == 3) ml2.loadDefault();
+        else if (r == 4) ml2.setDirectInputEnabled (! ml2.isDirectInputEnabled());
         else if (r >= 100) ml2.clear (r - 100);
     });
 }

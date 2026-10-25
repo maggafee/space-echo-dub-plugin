@@ -14,7 +14,7 @@ namespace layout
     struct Ctl { const char* id; const char* type; const char* sprite; float x, y, r, w, h; };
     // positions are in background coordinates (add topBarH for design space)
     constexpr Ctl controls[] = {
-        { "mode", "lever", "", 192.0f, 1106.0f, 34.0f, 0.0f, 0.0f },
+        { "mode", "lever", "", 192.0f, 1106.0f, 42.0f, 0.0f, 0.0f },
         { "headLamp0", "lamp", "", 120.0f, 1216.0f, 10.0f, 0.0f, 0.0f },
         { "headLamp1", "lamp", "", 162.0f, 1216.0f, 10.0f, 0.0f, 0.0f },
         { "headLamp2", "lamp", "", 204.0f, 1216.0f, 10.0f, 0.0f, 0.0f },
@@ -57,6 +57,9 @@ namespace layout
     constexpr float syncAngles[] = { -45.00f, 45.00f };
     constexpr float stereoModeAngles[] = { -90.00f, -35.00f, 35.00f, 90.00f };
     constexpr float sendModeAngles[] = { -50.00f, 50.00f };
+    constexpr float tapeW = 9.0f;
+    constexpr float tapeBox[] = { 60.0f, 430.0f, 1476.0f, 640.0f };
+    constexpr float tapePath[][2] = { { 196.0f, 452.0f }, { 89.0f, 523.0f }, { 238.0f, 563.0f }, { 372.0f, 596.0f }, { 452.0f, 525.0f }, { 540.0f, 525.0f }, { 998.0f, 525.0f }, { 1080.0f, 528.0f }, { 1176.0f, 578.0f }, { 1276.0f, 578.0f }, { 1358.0f, 528.0f }, { 1447.0f, 520.0f }, { 1338.0f, 452.0f } };
     constexpr float vuPivotX = 767.0f, vuPivotY = 505.0f, vuNeedleLen = 118.0f;
     constexpr float vuDb[]  = { -20.0f, -10.0f, -7.0f, -5.0f, -3.0f, -1.0f, 0.0f, 1.0f, 3.0f, 5.0f };
     constexpr float vuDeg[] = { -57.44f, -42.85f, -35.10f, -23.20f, -7.88f, 9.19f, 19.46f, 28.07f, 44.45f, 57.91f };

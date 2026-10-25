@@ -37,6 +37,7 @@ private:
 
     gui::FilmKnob* delayKnob = nullptr;
     gui::Reel* reelL = nullptr; gui::Reel* reelR = nullptr;
+    gui::TapeRun* tapeRun = nullptr;
     gui::VUMeter* vu = nullptr;
     gui::Lamp* powerLamp = nullptr;
     std::array<gui::Lamp*, 4> headLamps {};

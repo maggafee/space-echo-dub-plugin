@@ -148,9 +148,22 @@ ta = np.asarray(tog).copy()
 H, W = ta.shape[:2]
 yy, xx = np.mgrid[0:H, 0:W]
 TPX, TPY = 627.0, 640.0                # pivot where the bat enters the collar
-bat_m = (yy < TPY) & (np.abs(xx - TPX) < 170)
+# only the shaft: a narrow column above the collar (wider bit = the ball end); the nut corners stay on the nut
+SHX = 632.0
+bat_m = (((yy < 560) & (np.abs(xx - SHX) < 124)) | ((yy >= 560) & (yy < TPY + 10) & (np.abs(xx - SHX - 8) < 74))) & (ta[..., 3] > 0)
+bat_m = cv2.dilate(bat_m.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
 bat_l = ta.copy(); bat_l[..., 3] = np.where(bat_m, ta[..., 3], 0)
-nut_l = ta.copy(); nut_l[..., 3] = np.where(bat_m, 0, ta[..., 3])
+# the nut behind the shaft is hidden in the artwork: rebuild it by mirroring the visible lower half of the
+# collar rings (centred at y = RING_CY), so the "off" position does not show a hole
+RING_CY = 655
+nut_l = ta.copy()
+hole = bat_m & (yy > 455)
+my = np.clip(2 * RING_CY - yy, 0, H - 1)
+mir = ta[my, xx]
+soft = cv2.GaussianBlur(cv2.dilate(hole.astype(np.uint8), np.ones((9, 9), np.uint8)).astype(np.float32), (0, 0), 4)[..., None]
+soft = np.where(hole[..., None], 1.0, soft) * (yy > 440)[..., None]
+nut_l = (ta.astype(np.float32) * (1 - soft) + mir.astype(np.float32) * soft).clip(0, 255).astype(np.uint8)
+nut_l[..., 3] = np.where(bat_m & ~hole, 0, nut_l[..., 3])
 half_t = 600
 for arrx, nm in [(bat_l, "toggle_bat.png"), (nut_l, "toggle_nut.png")]:
     img = Image.fromarray(arrx, "RGBA")
@@ -160,6 +173,71 @@ for arrx, nm in [(bat_l, "toggle_bat.png"), (nut_l, "toggle_nut.png")]:
 
 # jack (used for the input selector plug ring) – just a square sprite
 make_round_sprite("jack.png", "jack.png", 160)
+
+
+# chickenhead pointer knob (ECHO MODE selector), rendered from a height field. Points up, pivot = centre.
+def make_chickenhead(out_px=360, N=1080):
+    u, v = np.meshgrid(np.linspace(-1, 1, N), np.linspace(-1, 1, N))
+    px = 2.0 / N
+
+    def capsule_mask(c1, r1, c2, r2):
+        m = np.zeros((N, N), np.uint8)
+        to = lambda x, y: (int(round((x + 1) / px)), int(round((y + 1) / px)))
+        cv2.circle(m, to(*c1), int(r1 / px), 1, -1, cv2.LINE_8)
+        cv2.circle(m, to(*c2), int(r2 / px), 1, -1, cv2.LINE_8)
+        # outer tangents of the two circles (both on the x = 0 axis)
+        d = c1[1] - c2[1]
+        sa = (r1 - r2) / d
+        ca = math.sqrt(max(0.0, 1 - sa * sa))
+        pts = []
+        for sgn in (1, -1):
+            pts.append(to(c1[0] + sgn * r1 * ca, c1[1] + r1 * sa))
+            pts.append(to(c2[0] + sgn * r2 * ca, c2[1] + r2 * sa))
+        cv2.fillPoly(m, [np.array([pts[0], pts[1], pts[3], pts[2]])], 1)
+        return m
+
+    ptr = capsule_mask((0.0, 0.20), 0.25, (0.0, -0.86), 0.08)
+    rr = np.hypot(u, v)
+    disc = (rr < 0.50).astype(np.uint8)
+    dp = cv2.distanceTransform(ptr, cv2.DIST_L2, 5) * px
+    dd = cv2.distanceTransform(disc, cv2.DIST_L2, 5) * px
+    # metal skirt: low cone with a rounded rim
+    hb = (0.10 + 0.16 * np.sqrt(np.clip(dd / 0.04, 0, 1)) + 0.08 * np.clip(dd / 0.5, 0, 1)) * disc
+    ridge = np.clip(1.0 - np.abs(u) / 0.26, 0, 1)
+    hp = (0.40 + 0.45 * np.sqrt(np.clip(dp / 0.07, 0, 1)) + 0.12 * ridge * np.clip(dp / 0.07, 0, 1)) * ptr
+    hgt = np.maximum(hb, hp)
+    hgt = cv2.GaussianBlur(hgt.astype(np.float32), (0, 0), 1.2)
+
+    # albedo: brushed metal skirt, black bakelite pointer with a cream inlay line
+    ang = np.arctan2(v, u)
+    brushed = 0.44 + 0.06 * np.sin(rr * 900) * np.random.rand(N, N) + 0.05 * np.sin(ang * 3 + 1.0)
+    alb = np.dstack([brushed * 1.0, brushed * 0.96, brushed * 0.90]).astype(np.float32)
+    alb[ptr > 0] = [0.05, 0.046, 0.042]
+    line = (np.abs(u) < 0.024) & (v < -0.10) & (v > -0.80)
+    alb[line] = [0.90, 0.84, 0.70]
+    hgt = hgt - 0.015 * cv2.GaussianBlur(line.astype(np.float32), (0, 0), 1.2)
+    alb *= (1 + np.random.randn(N, N, 1).astype(np.float32) * 0.03)
+
+    gy, gx = np.gradient(hgt, px)
+    k = 0.9
+    nrm = np.dstack([-gx * k, -gy * k, np.ones_like(hgt)])
+    nrm /= np.linalg.norm(nrm, axis=2, keepdims=True)
+    L = np.array([-0.45, -0.65, 0.80]); L /= np.linalg.norm(L)
+    Hh = L + np.array([0, 0, 1.0]); Hh /= np.linalg.norm(Hh)
+    diff = np.clip((nrm * L).sum(-1), 0, 1)
+    nh = np.clip((nrm * Hh).sum(-1), 0, 1)
+    isP = (ptr > 0)[..., None]
+    spec = np.where(isP[..., 0], 0.75 * nh ** 60 + 0.10 * nh ** 8, 0.35 * nh ** 12)
+    rgb = alb * (0.35 + 0.85 * diff[..., None]) + spec[..., None]
+    # ambient occlusion: dark ring where the pointer sits on the skirt
+    ao = 1 - 0.55 * np.exp(-(np.clip(cv2.distanceTransform(1 - ptr, cv2.DIST_L2, 5) * px, 0, 1)) / 0.025) * (1 - isP[..., 0])
+    rgb *= ao[..., None]
+    a = np.clip(np.maximum(ptr, disc).astype(np.float32), 0, 1)
+    img = np.dstack([np.clip(rgb, 0, 1) * 255, a * 255]).astype(np.uint8)
+    im = Image.fromarray(img, "RGBA").resize((out_px, out_px), Image.LANCZOS)
+    im.save(os.path.join(OUT, "chickenhead.png"), optimize=True)
+
+make_chickenhead()
 
 # ----------------------------------------------------------------------------- background
 mock = load("mockup.png").convert("RGB")
@@ -218,6 +296,59 @@ M = np.where(m2[..., None], np.clip(M.astype(int) + noise[..., None], 0, 255), M
 mask = np.zeros(M.shape[:2], np.uint8)
 cv2.circle(mask, (1405, 846), 33, 1, -1)
 M = inpaint_rgb(M, mask, 7)
+
+# 4) the painted tape is crumpled: remove it and lay a clean, straight tape path instead
+REEL_C = [((322.0, 272.0), 252.0), ((1207.0, 273.0), 252.0)]
+H, W = M.shape[:2]
+yy, xx = np.mgrid[0:H, 0:W]
+g = M.astype(int)
+r_, g_, b_ = g[..., 0], g[..., 1], g[..., 2]
+rf = np.maximum(r_, 1).astype(float)
+tape_old = (g_ / rf < 0.62) & (b_ / rf < 0.52) & (r_ > 50) & (r_ < 220) & (yy > 430) & (yy < 612) & (xx > 62) & (xx < 1474)
+for (c, rad) in REEL_C:
+    tape_old &= np.hypot(xx - c[0], yy - c[1]) > rad
+n_cc, lab, stats, _ = cv2.connectedComponentsWithStats(tape_old.astype(np.uint8), 8)
+tape_old = np.isin(lab, [i for i in range(1, n_cc) if stats[i, cv2.CC_STAT_AREA] >= 60]).astype(np.uint8)
+tape_old = cv2.dilate(tape_old, np.ones((7, 7), np.uint8)).astype(bool)
+for (c, rad) in REEL_C:
+    tape_old &= np.hypot(xx - c[0], yy - c[1]) > rad - 6
+M_clean = inpaint_rgb(M, tape_old, 9)
+noise = (np.random.randn(H, W) * 4).astype(int)
+M_clean = np.where(tape_old[..., None], np.clip(M_clean.astype(int) + noise[..., None], 0, 255), M_clean).astype(np.uint8)
+
+# parts the tape runs behind (posts, tension arm, rollers, head blocks): kept on top of the new tape
+occ = np.zeros((H, W), np.uint8)
+for (x, y, r) in [(97, 476, 27), (550, 519, 27), (986, 519, 27), (1435, 476, 27),
+                  (212, 552, 32), (210, 601, 32), (411, 568, 58), (1123, 568, 58), (1320, 561, 48)]:
+    cv2.circle(occ, (x, y), r, 1, -1)
+for (x0, y0, x1, y1) in [(86, 476, 114, 566), (538, 519, 565, 606), (973, 519, 1000, 606), (1422, 476, 1449, 566),
+                         (180, 552, 244, 601), (600, 532, 937, 606)]:
+    cv2.rectangle(occ, (x0, y0), (x1, y1), 1, -1)
+occ = cv2.GaussianBlur(occ.astype(np.float32), (0, 0), 0.8)
+
+TAPE_W = 11.0
+TAPE_PATH = [(196, 452), (89, 523), (238, 563), (372, 596), (452, 525), (540, 525), (998, 525),
+             (1080, 528), (1176, 578), (1276, 578), (1358, 528), (1447, 520), (1338, 452)]
+SS = 4
+tl = Image.new("L", (W * SS, H * SS), 0)
+ImageDraw.Draw(tl).line([(x * SS, y * SS) for x, y in TAPE_PATH], fill=255, width=int(TAPE_W * SS), joint="curve")
+tape_a = np.asarray(tl.resize((W, H), Image.LANCZOS)).astype(np.float32) / 255.0
+for (c, rad) in REEL_C:
+    tape_a *= np.hypot(xx - c[0], yy - c[1]) > rad - 4
+# oxide brown with a soft sheen along the length; slight edge darkening
+edge = cv2.GaussianBlur(tape_a, (0, 0), 1.6)
+tape_rgb = np.array([86, 49, 30], np.float32) * (0.75 + 0.35 * edge[..., None])
+sh = np.clip(cv2.GaussianBlur(tape_a, (0, 0), 3.0) - 0.55, 0, 1)
+tape_rgb += sh[..., None] * np.array([60, 40, 26], np.float32)
+# drop shadow on the panel
+shadow = cv2.GaussianBlur(np.roll(np.roll(tape_a, 3, 0), 2, 1), (0, 0), 2.5)
+base = M_clean.astype(np.float32) * (1 - 0.45 * shadow[..., None] * (1 - occ[..., None]))
+vis = tape_a * (1 - occ)
+M = (base * (1 - vis[..., None]) + tape_rgb * vis[..., None]).clip(0, 255).astype(np.uint8)
+# visible tape as alpha mask for the animated sheen drawn by the editor
+TAPE_BOX = (60, 430, 1476, 640)
+tm = (vis[TAPE_BOX[1]:TAPE_BOX[3], TAPE_BOX[0]:TAPE_BOX[2]] * 255).astype(np.uint8)
+Image.merge("RGBA", [Image.new("L", (tm.shape[1], tm.shape[0]), 255)] * 3 + [Image.fromarray(tm, "L")]).save(os.path.join(OUT, "tape_mask.png"), optimize=True)
 
 bg = Image.new("RGB", (BG_W, BG_H), (20, 19, 16))
 bg.paste(Image.fromarray(M[:MOCK_CUT]), (0, 0))
@@ -393,7 +524,7 @@ def button(name, cx, cy, r, label, plate, below=True):
 # ECHO MODE: 12 position rotary selector
 mx, my = (P["mode"][0] + P["mode"][1]) / 2, EY + 128
 mode_angles = [-150 + 300 * i / 11 for i in range(12)]
-lever("mode", mx, my, 34, mode_angles, [str(i + 1) for i in range(12)], "mode", label_r=68, label_size=18)
+lever("mode", mx, my, 42, mode_angles, [str(i + 1) for i in range(12)], "mode", label_r=70, label_size=18)
 # head indicator lamps
 heads_y = EY + 238
 hx = [mx - 72, mx - 30, mx + 12, mx + 66]
@@ -499,6 +630,9 @@ L.append("    };\n")
 for k, c in controls.items():
     if c["type"] == "lever":
         L.append("    constexpr float {}Angles[] = {{ {} }};".format(k, ", ".join("%.2ff" % a for a in c["angles"])))
+L.append("    constexpr float tapeW = {:.1f}f;".format(TAPE_W))
+L.append("    constexpr float tapeBox[] = {{ {} }};".format(", ".join("%.1ff" % v for v in TAPE_BOX)))
+L.append("    constexpr float tapePath[][2] = {{ {} }};".format(", ".join("{ %.1ff, %.1ff }" % p for p in TAPE_PATH)))
 L.append("    constexpr float vuPivotX = 767.0f, vuPivotY = 505.0f, vuNeedleLen = 118.0f;")
 L.append("    constexpr float vuDb[]  = {{ {} }};".format(", ".join("%.1ff" % d for d, _ in vu_tab)))
 L.append("    constexpr float vuDeg[] = {{ {} }};".format(", ".join("%.2ff" % a for _, a in vu_tab)))

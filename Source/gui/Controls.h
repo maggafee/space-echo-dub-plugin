@@ -88,6 +88,7 @@ class LeverSwitch : public juce::Component, public ParamControl
 public:
     LeverSwitch (const juce::String& paramId, std::vector<float> anglesDeg, float armToBase, bool wrap);
     juce::Component& component() override { return *this; }
+    void useChickenhead();          // draw a retro chickenhead pointer knob instead of the bat lever
 
     void attach (juce::RangedAudioParameter& p);
     void paint (juce::Graphics&) override;
@@ -107,7 +108,8 @@ private:
     bool wrap;
     int index = 0;
     float shownAngle = 0, dragStartIndex = 0;
-    ScaledImage base, arm;
+    ScaledImage base, arm, chicken;
+    bool chickenhead = false;
     std::unique_ptr<juce::ParameterAttachment> attachment;
     juce::RangedAudioParameter* param = nullptr;
 };
@@ -190,6 +192,24 @@ public:
 private:
     ScaledImage img;
     float fill, angle;
+};
+
+// ----------------------------------------------------------------------------- running tape
+// Draws a faint moving oxide texture along the tape path, clipped to the visible tape (mask from gen_assets).
+class TapeRun : public juce::Component
+{
+public:
+    TapeRun (juce::Rectangle<float> boxDesign, std::vector<juce::Point<float>> pathDesign, float tapeWidth);
+    void paint (juce::Graphics&) override;
+    void tick (double dt, float speed);
+    bool hitTest (int, int) override { return false; }
+
+private:
+    juce::Rectangle<float> box;
+    std::vector<juce::Point<float>> path;   // relative to box, design units
+    std::vector<float> cum;                 // cumulative length at each point
+    float width, offset = 0;
+    ScaledImage mask;
 };
 
 // ----------------------------------------------------------------------------- VU meter needle
