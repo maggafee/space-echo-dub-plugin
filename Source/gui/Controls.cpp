@@ -14,11 +14,17 @@ juce::Image Assets::image (const char* resourceName)
     return {};
 }
 
+Assets::Fonts::Fonts()
+    : semi (juce::Typeface::createSystemTypefaceFor (BinaryData::OswaldSemiBold_ttf, BinaryData::OswaldSemiBold_ttfSize)),
+      medium (juce::Typeface::createSystemTypefaceFor (BinaryData::OswaldMedium_ttf, BinaryData::OswaldMedium_ttfSize))
+{
+}
+
 juce::Font Assets::font (float height, bool semiBold)
 {
-    static juce::Typeface::Ptr semi = juce::Typeface::createSystemTypefaceFor (BinaryData::OswaldSemiBold_ttf, BinaryData::OswaldSemiBold_ttfSize);
-    static juce::Typeface::Ptr med = juce::Typeface::createSystemTypefaceFor (BinaryData::OswaldMedium_ttf, BinaryData::OswaldMedium_ttfSize);
-    return juce::Font (juce::FontOptions (semiBold ? semi : med).withHeight (height));
+    // shared, not function-static: the typefaces must die with the last editor, not at library unload
+    juce::SharedResourcePointer<Fonts> fonts;
+    return juce::Font (juce::FontOptions (semiBold ? fonts->semi : fonts->medium).withHeight (height));
 }
 
 const juce::Image& ScaledImage::get (int pxW, int pxH)

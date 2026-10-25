@@ -9,6 +9,12 @@ struct Assets
 {
     static juce::Image image (const char* resourceName);
     static juce::Font font (float height, bool semiBold = true);
+
+    struct Fonts
+    {
+        Fonts();
+        juce::Typeface::Ptr semi, medium;
+    };
 };
 
 namespace colours

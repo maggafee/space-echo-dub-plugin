@@ -26,6 +26,7 @@ private:
     template <typename T> T* registerControl (std::unique_ptr<T> c, juce::Rectangle<float> rect);
 
     DubascoProcessor& proc;
+    juce::SharedResourcePointer<gui::Assets::Fonts> fonts;   // keeps the embedded typefaces alive while the editor exists
     gui::TopBar topBar;
     gui::ScaledImage background;
 

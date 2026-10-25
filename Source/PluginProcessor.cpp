@@ -179,9 +179,21 @@ void DubascoProcessor::setStateInformation (const void* data, int size)
 
     auto params = root.getChildWithName (apvts.state.getType());
     if (params.isValid())
+    {
+        // A host may have pushed an un-snapped value into a discrete parameter (e.g. 0.49 into a
+        // switch). APVTS compares denormalised values, so it would not restore such a parameter.
+        // Snap everything first so replaceState() sees the real difference.
+        for (auto* p : getParameters())
+            if (auto* rp = dynamic_cast<juce::RangedAudioParameter*> (p))
+            {
+                const float snapped = rp->convertTo0to1 (rp->convertFrom0to1 (rp->getValue()));
+                if (std::abs (snapped - rp->getValue()) > 1.0e-6f)
+                    rp->setValueNotifyingHost (snapped);
+            }
         apvts.replaceState (params);
+    }
     auto map = root.getChildWithName ("MIDIMAP");
-    if (map.isValid())
+    if (map.isValid() && map.getNumChildren() > 0)
         midiLearn.fromValueTree (map);
     presets.setCurrentName (root.getProperty ("presetName", presets.getCurrentName()).toString());
     vuSource.store ((int) root.getProperty ("vuSource", 0));
