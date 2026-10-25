@@ -99,3 +99,8 @@ assets_src/                     Original-Grafiken (Mockup, ausgeschnittene Regle
 Gebaut mit JUCE 8 (AGPLv3 oder kommerzielle JUCE-Lizenz) und dem VST3-SDK (MIT). Für den privaten Gebrauch ist das unproblematisch.
 Wer das Plugin verkaufen oder als Closed Source verteilen will, braucht eine passende JUCE-Lizenz. "Roland" und "Space Echo" sind
 Marken der Roland Corporation, das Plugin ist eine unabhängige Nachbildung des Klangcharakters.
+
+## WordPress-Version
+
+Unter [`wordpress/`](wordpress/) liegt das WordPress-Plugin „Dub Echo Plugin“: dieselbe Engine und
+Optik im Browser, mit MP3-Playlist, Likes und Statistik. Details in [`wordpress/README.md`](wordpress/README.md).

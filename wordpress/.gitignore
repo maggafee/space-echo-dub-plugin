@@ -1,0 +1,3 @@
+dub-echo.zip
+tests/*.f32
+tests/engine_compare
