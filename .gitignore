@@ -4,3 +4,5 @@ JUCE/
 .DS_Store
 *.user
 .vs/
+mpc/TapeEcho/dist/
+mpc-sdk/

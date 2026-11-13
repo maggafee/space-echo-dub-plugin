@@ -1,0 +1,17 @@
+{
+  "name": "Tape Echo",
+  "manufacturer": "Dubasco",
+  "version": "1.0.0",
+  "format": "vst2",
+  "kind": "effect",
+  "uid": "DbTe",
+  "numInputs": 2,
+  "numOutputs": 2,
+  "category": "Effect",
+  "file32": "VST/tape-echo-arm32.so",
+  "file64": "VST/tape-echo-arm64.so",
+  "description": "Dubasco Tape Echo: RE-201 style dub tape echo with three heads, 12 echo modes, spring reverb, wow & flutter, tape age, tempo sync, throw and hold.",
+  "author": "Dubasco",
+  "url": "https://github.com/maggafee/space-echo-dub-plugin",
+  "license": "All rights reserved"
+}
