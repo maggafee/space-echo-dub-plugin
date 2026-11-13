@@ -21,20 +21,20 @@ ersten Test speichern. Zum Entfernen einfach den Plugin-Ordner vom Stick lösche
 
 ## Bedienung
 
-Zwei Seiten, die 16 Q-Link-Regler folgen der Anordnung in Viererblöcken.
+Der Touchscreen zeigt das Dubasco-Gerät mit denselben Knöpfen, Schaltern und Lampen wie die Desktop-Version.
+Die Knöpfe werden durch Ziehen gedreht, Schalter und Lampen-Taster durch Antippen geschaltet.
 
-| Seite ECHO | | | |
-|---|---|---|---|
-| Delay Time | Feedback | Echo Level | Reverb |
-| Input | Bass | Treble | Tape Sat |
-| Echo Mode (1–12) | Tempo Sync | Sync Note | Stereo |
-| Dub Throw | Hold | Spring Kick | Power |
+- **DECK** (F1): das ganze Gerät mit Spulen, VU-Meter und der Hauptreihe
+  (Input, Mic/Line, Delay Time, Feedback, Bass, Treble, Echo Level, Tape Sat, Power).
+- **DUB** (F2): Hauptreihe plus Dub-Sektion (Echo Mode mit Kopf-Lampen, Spring Reverb, Tape, Time/Stereo, Mix, Dub).
 
-| Seite TAPE | | | |
-|---|---|---|---|
-| Wow Flutter | Tape Age | Inertia | Spring Decay |
-| Low Cut | Ducking | Dry Level | Output |
-| Input Jack | Send Mode | | |
+Q-Links auf der Seite DUB (oben links nach unten rechts):
+Echo Mode, Reverb, Spring Decay, Wow & Flutter / Tape Age, Inertia, Sync Note, Low Cut /
+Ducking, Dry, Output, Stereo / Sync, Spring Kick, Throw, Hold.
+
+Der Skin wird mit `python3 mpc/TapeEcho/tools/make_skin.py` (braucht Pillow) aus `Resources/images` und
+`Source/Layout.h` erzeugt und liegt fertig in `mpc/TapeEcho/skins/`. Jedes Bedienelement wird auf sein
+Stück Hintergrund gerechnet, dadurch gibt es keine Kanten oder Ränder um die Knöpfe.
 
 Unterschiede zur Desktop-Version:
 

@@ -1,0 +1,1451 @@
+{
+ "pageData": {
+  "version": 1,
+  "componentDefinitions": {
+   "version": 2,
+   "importFiles": [],
+   "localComponentDefinitions": []
+  },
+  "replacementStrings": [
+   {
+    "key": "Parameter 9",
+    "value": [
+     "1 H1",
+     "2 H2",
+     "3 H3",
+     "4 H2+3",
+     "5 H1+R",
+     "6 H2+R",
+     "7 H3+R",
+     "8 H12+R",
+     "9 H23+R",
+     "10 H13+R",
+     "11 All+R",
+     "12 Rev"
+    ]
+   },
+   {
+    "key": "Parameter 10",
+    "value": [
+     "Off",
+     "On"
+    ]
+   },
+   {
+    "key": "Parameter 11",
+    "value": [
+     "1/32",
+     "1/16T",
+     "1/16",
+     "1/16D",
+     "1/8T",
+     "1/8",
+     "1/8D",
+     "1/4T",
+     "1/4",
+     "1/4D",
+     "1/2T",
+     "1/2",
+     "1/2D",
+     "1/1"
+    ]
+   },
+   {
+    "key": "Parameter 12",
+    "value": [
+     "Mono",
+     "Wide",
+     "Stereo",
+     "PingPong"
+    ]
+   },
+   {
+    "key": "Parameter 20",
+    "value": [
+     "Mic",
+     "Line"
+    ]
+   },
+   {
+    "key": "Parameter 21",
+    "value": [
+     "All",
+     "Throw"
+    ]
+   },
+   {
+    "key": "Parameter 22",
+    "value": [
+     "Off",
+     "On"
+    ]
+   },
+   {
+    "key": "Parameter 23",
+    "value": [
+     "Off",
+     "On"
+    ]
+   },
+   {
+    "key": "Parameter 24",
+    "value": [
+     "Off",
+     "On"
+    ]
+   },
+   {
+    "key": "Parameter 25",
+    "value": [
+     "Off",
+     "On"
+    ]
+   }
+  ],
+  "info": {
+   "version": 1,
+   "type": "CompleteDescription"
+  },
+  "tabs": [
+   {
+    "version": 1,
+    "tabName": "DECK",
+    "fnKeyIndex": 0,
+    "fnKeySubIndex": 0,
+    "componentDefinition": {
+     "version": 2,
+     "actions": [],
+     "backgroundData": {
+      "version": 1,
+      "focussed": {
+       "version": 1,
+       "colour": "ff120e0b",
+       "image": ""
+      },
+      "unfocussed": {
+       "version": 1,
+       "colour": "ff120e0b",
+       "image": ""
+      }
+     },
+     "ignoreMousePresses": false,
+     "disableCoarseDataWheel": false,
+     "componentsData": [
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "background",
+        "type": "Image",
+        "data": {
+         "version": 2,
+         "imageType": "Regular",
+         "colour": "0",
+         "image": "images/deck_bg.jpg"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "No",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "0 0 1280 628"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "input",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/deck_input.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 1"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "213 452 91 91"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "delayTime",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/deck_delayTime.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 2"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "349 460 93 93"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "feedback",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/deck_feedback.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 3"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "481 452 97 98"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "bass",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/deck_bass.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 6"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "598 456 92 91"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "treble",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/deck_treble.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 7"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "706 457 89 90"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "echoLevel",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/deck_echoLevel.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 4"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "810 457 91 92"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "tapeSat",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/deck_tapeSat.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 8"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "920 455 84 84"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "power",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/deck_power_on.jpg",
+         "offImage": "images/deck_power_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 1,
+         "handleName": "Parameter 24",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1013 508 65 65"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "powerLamp",
+        "type": "Image",
+        "data": {
+         "version": 2,
+         "imageType": "FilmStrip",
+         "colour": "0",
+         "image": "images/deck_powerlamp.jpg",
+         "numFrames": 2,
+         "handleName": "Parameter 24"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "No",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1012 440 68 69"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "jackMic",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/deck_jackMic_on.jpg",
+         "offImage": "images/deck_jackMic_off.jpg",
+         "buttonId": 0,
+         "numButtonsInGroup": 2,
+         "handleName": "Parameter 20",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "213 546 44 44"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "jackLine",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/deck_jackLine_on.jpg",
+         "offImage": "images/deck_jackLine_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 2,
+         "handleName": "Parameter 20",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "264 546 44 44"
+       }
+      }
+     ]
+    },
+    "qlinkBoundsData": []
+   },
+   {
+    "version": 1,
+    "tabName": "DUB",
+    "fnKeyIndex": 1,
+    "fnKeySubIndex": 0,
+    "componentDefinition": {
+     "version": 2,
+     "actions": [],
+     "backgroundData": {
+      "version": 1,
+      "focussed": {
+       "version": 1,
+       "colour": "ff120e0b",
+       "image": ""
+      },
+      "unfocussed": {
+       "version": 1,
+       "colour": "ff120e0b",
+       "image": ""
+      }
+     },
+     "ignoreMousePresses": false,
+     "disableCoarseDataWheel": false,
+     "componentsData": [
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "background",
+        "type": "Image",
+        "data": {
+         "version": 2,
+         "imageType": "Regular",
+         "colour": "0",
+         "image": "images/dub_bg.jpg"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "No",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "0 0 1280 628"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "input",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_input.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 1"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "82 115 119 119"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "delayTime",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_delayTime.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 2"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "260 127 121 121"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "feedback",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_feedback.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 3"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "432 117 127 126"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "bass",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_bass.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 6"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "586 121 119 119"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "treble",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_treble.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 7"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "726 122 117 117"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "echoLevel",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_echoLevel.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 4"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "863 123 118 119"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "tapeSat",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_tapeSat.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 8"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1007 120 109 109"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "power",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/dub_power_on.jpg",
+         "offImage": "images/dub_power_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 1,
+         "handleName": "Parameter 24",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1128 189 84 85"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "powerLamp",
+        "type": "Image",
+        "data": {
+         "version": 2,
+         "imageType": "FilmStrip",
+         "colour": "0",
+         "image": "images/dub_powerlamp.jpg",
+         "numFrames": 2,
+         "handleName": "Parameter 24"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "No",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1126 100 89 89"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "jackMic",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/dub_jackMic_on.jpg",
+         "offImage": "images/dub_jackMic_off.jpg",
+         "buttonId": 0,
+         "numButtonsInGroup": 2,
+         "handleName": "Parameter 20",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "82 239 57 57"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "jackLine",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/dub_jackLine_on.jpg",
+         "offImage": "images/dub_jackLine_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 2,
+         "handleName": "Parameter 20",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "150 239 57 57"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "mode",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_mode.jpg",
+         "numFrames": 12,
+         "invert": false,
+         "dragOrientation": "Horizontal",
+         "handleName": "Parameter 9"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "91 378 138 137"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "headLamps",
+        "type": "Image",
+        "data": {
+         "version": 2,
+         "imageType": "FilmStrip",
+         "colour": "0",
+         "image": "images/dub_headlamps.jpg",
+         "numFrames": 12,
+         "handleName": "Parameter 9"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "No",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "86 524 143 28"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "reverb",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_reverb.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 5"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "282 395 76 76"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "springDecay",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_springDecay.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 16"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "378 399 67 68"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "wowFlutter",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_wowFlutter.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 13"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "477 398 80 80"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "tapeAge",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_tapeAge.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 14"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "567 398 80 80"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "inertia",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_inertia.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 15"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "657 398 80 80"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "lowCut",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_lowCut.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 17"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "966 388 54 54"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "duck",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_duck.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 18"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1051 388 54 54"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "dry",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_dry.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 19"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "966 479 54 54"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "output",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_output.jpg",
+         "numFrames": 48,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 0"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1051 479 54 54"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "syncNote",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_syncNote.jpg",
+         "numFrames": 14,
+         "invert": false,
+         "dragOrientation": "Vertical",
+         "handleName": "Parameter 11"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "863 395 60 60"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "sync",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/dub_sync_on.jpg",
+         "offImage": "images/dub_sync_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 1,
+         "handleName": "Parameter 10",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "767 401 58 58"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "stereoMode",
+        "type": "Knob",
+        "data": {
+         "version": 3,
+         "knobType": "FilmStrip",
+         "filmStrip": "images/dub_stereoMode.jpg",
+         "numFrames": 4,
+         "invert": false,
+         "dragOrientation": "Horizontal",
+         "handleName": "Parameter 12"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "819 505 56 56"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "sendMode",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/dub_sendMode_on.jpg",
+         "offImage": "images/dub_sendMode_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 1,
+         "handleName": "Parameter 21",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1155 520 37 36"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "kick",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/dub_kick_on.jpg",
+         "offImage": "images/dub_kick_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 1,
+         "handleName": "Parameter 25",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "336 488 59 60"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "throw",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/dub_throw_on.jpg",
+         "offImage": "images/dub_throw_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 1,
+         "handleName": "Parameter 22",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1141 377 65 65"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "hold",
+        "type": "Button",
+        "data": {
+         "version": 2,
+         "onImage": "images/dub_hold_on.jpg",
+         "offImage": "images/dub_hold_off.jpg",
+         "buttonId": 1,
+         "numButtonsInGroup": 1,
+         "handleName": "Parameter 23",
+         "gestureBehaviour": "Instant"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "Yes",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "1141 442 65 65"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "tapeReadout",
+        "type": "Label",
+        "data": {
+         "version": 1,
+         "textStyle": {
+          "version": 1,
+          "font": {
+           "version": 1,
+           "name": "Titillium Web",
+           "style": "SemiBold",
+           "height": 15.2
+          },
+          "colour": "ffffb347",
+          "justification": "horizontallyCentred verticallyCentred",
+          "case": "Original"
+         },
+         "type": "Value",
+         "handleName": "Parameter 2"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "No",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "515 542 184 19"
+       }
+      },
+      {
+       "version": 2,
+       "componentData": {
+        "version": 1,
+        "name": "noteReadout",
+        "type": "Label",
+        "data": {
+         "version": 1,
+         "textStyle": {
+          "version": 1,
+          "font": {
+           "version": 1,
+           "name": "Titillium Web",
+           "style": "SemiBold",
+           "height": 15.2
+          },
+          "colour": "ffffb347",
+          "justification": "horizontallyCentred verticallyCentred",
+          "case": "Original"
+         },
+         "type": "Value",
+         "handleName": "Parameter 11"
+        }
+       },
+       "handle remapping": {
+        "version": 1,
+        "map": []
+       },
+       "bounds": {
+        "version": 1,
+        "acceptsHWFocus": "No",
+        "showWhenDataModelInvalid": "Hide",
+        "whenVisible": "Always",
+        "boundsType": "Absolute",
+        "bounds": "857 462 70 19"
+       }
+      }
+     ]
+    },
+    "qlinkBoundsData": []
+   }
+  ]
+ }
+}
