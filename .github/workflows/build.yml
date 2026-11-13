@@ -10,7 +10,7 @@ on:
 jobs:
   macos:
     name: macOS (VST3 + AU + Standalone, Universal)
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - name: Configure
@@ -102,10 +102,47 @@ jobs:
             build/DubascoTapeEcho_artefacts/Release/VST3
             build/DubascoTapeEcho_artefacts/Release/Standalone
 
+  mpc:
+    name: Akai MPC standalone (MPC OS 3.10.1+, arm32 + arm64)
+    runs-on: ubuntu-24.04
+    env:
+      MPC_SDK_REPO: https://github.com/inmusic-software/mpc-plugin-builder-sdk.git
+      MPC_SDK_COMMIT: febd2ca5bd9eb16c4a412837196e145566bc981b
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch MPC Plugin SDK (pinned)
+        run: |
+          git init -q mpc-sdk
+          git -C mpc-sdk remote add origin "$MPC_SDK_REPO"
+          git -C mpc-sdk fetch -q --depth 1 origin "$MPC_SDK_COMMIT"
+          git -C mpc-sdk checkout -q FETCH_HEAD
+      - name: Build (native + arm32 + arm64, skins, validator)
+        run: python3 mpc-sdk/tools/build.py "$GITHUB_WORKSPACE/mpc/TapeEcho"
+      - name: Host simulator tests
+        run: |
+          lib=$(ls mpc/TapeEcho/build/native/*.so | head -1)
+          mpc-sdk/.sdk-tools/host_sim "$lib" dump
+          for b in 32 128 512; do
+            mpc-sdk/.sdk-tools/host_sim "$lib" test --seconds 6 --block $b --wav mpc/TapeEcho/build/test-$b.wav | tee hostsim-$b.txt
+            if grep -q "FAIL" hostsim-$b.txt; then echo "host_sim reported FAIL (block $b)"; exit 1; fi
+          done
+      - name: Package
+        run: |
+          python3 mpc-sdk/tools/package.py "$GITHUB_WORKSPACE/mpc/TapeEcho" --out dist
+          cp mpc/TapeEcho/build/test-128.wav dist/ 2>/dev/null || true
+          ls -la dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Dubasco-Tape-Echo-MPC
+          path: |
+            dist/*.zip
+            dist/*.wav
+            hostsim-*.txt
+
   release:
     name: GitHub release (tags only)
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [ macos, windows ]
+    needs: [ macos, windows, mpc ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
